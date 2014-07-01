@@ -1,8 +1,8 @@
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -198,7 +198,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					seg.setArrtime(landTime);
 				}
 				
-				flightDetail.setDepdate(stringToDate(searchParam.getDepDate()));
+				flightDetail.setDepdate(Date.valueOf(searchParam.getDepDate()));
 				flightDetail.setFlightno(flightNoList);
 				flightDetail.setMonetaryunit(unit);
 				flightDetail.setTax(0.0d);//税费
@@ -224,24 +224,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		}
 	}
 	
-	/**
-     * Date转String
-     * 
-     * @param count
-     * @return
-     */
-    private static Date stringToDate(String date) {
-    	System.out.println(date);
-        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-        Date dDate = new Date();
-        try {
-        	dDate = formatDate.parse(date);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			logger.error(e.getMessage(), e);
-		}
-        return dDate;
-    }
+	
     
     
 }
