@@ -189,6 +189,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				String [] flightNos = flight.split(",");
 				for(String flightNo:flightNos){
 					flightNoList.add(flightNo);
+					flightNo = flight.replaceAll("[^a-zA-Z\\d]", "");
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
 					seg.setArrDate(searchParam.getDepDate());
@@ -226,5 +227,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 	
 	
     
-    
+
+
 }
