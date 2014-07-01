@@ -35,7 +35,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 
 	
 	public BookingResult getBookingInfo(FlightSearchParam param) {
-		String bookingUrlPre = "https://www.airblue.com//bookings/flight_selection.aspx?TT=OW&SS=&RT=&FL=on&DC=%s&AC=%s&AM=%s&AD=%s&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=& RM=&RD=&PA=1&PC=&PI=&CC=Y&NS=&CD=";
+		String bookingUrlPre = "https://www.airblue.com//bookings/flight_selection.aspx";
 		BookingResult bookingResult = new BookingResult();
 		BookingInfo bookingInfo = new BookingInfo();
 		bookingInfo.setAction(bookingUrlPre);
@@ -191,6 +191,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					flightNoList.add(flightNo);
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
+					seg.setArrDate(searchParam.getDepDate());
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(leavTime);
