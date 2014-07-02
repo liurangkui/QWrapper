@@ -174,15 +174,12 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					go_primium = go_primium.replace(",", "");
 				}
 				double go_price = 0.0d;
-				if(go_discount.equals("0.0")){
-					go_price = (new BigDecimal(go_standard)).doubleValue() > (new BigDecimal(go_primium)).doubleValue()?(new BigDecimal(go_primium)).doubleValue():(new BigDecimal(go_standard)).doubleValue();
-				}else if(go_standard.equals("0.0")){
-					go_price = (new BigDecimal(go_primium)).doubleValue() > (new BigDecimal(go_discount)).doubleValue()?(new BigDecimal(go_discount)).doubleValue():(new BigDecimal(go_primium)).doubleValue();
-				}else if (go_primium.equals("0.0")){
-					go_price = (new BigDecimal(go_standard)).doubleValue() > (new BigDecimal(go_discount)).doubleValue()?(new BigDecimal(go_discount)).doubleValue():(new BigDecimal(go_standard)).doubleValue();
-				}else{
-					go_price = (new BigDecimal(go_standard)).doubleValue() > (new BigDecimal(go_discount)).doubleValue()?(new BigDecimal(go_discount)).doubleValue():(new BigDecimal(go_standard)).doubleValue();
-					go_price = go_price > (new BigDecimal(go_primium)).doubleValue()?(new BigDecimal(go_primium)).doubleValue():go_price;
+				if(!go_discount.equals("0.0")){
+					go_price = (new BigDecimal(go_discount)).doubleValue();
+				}else if(!go_standard.equals("0.0") && go_discount.equals("0.0")){
+					go_price = (new BigDecimal(go_standard)).doubleValue();
+				}else if(!go_primium.equals("0.0") && go_standard.equals("0.0")){
+					go_price = (new BigDecimal(go_primium)).doubleValue();
 				}
 				
 				String [] go_flightNos = go_flight.split(",");
@@ -245,15 +242,12 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 						ret_primium = ret_primium.replace(",", "");
 					}
 					double ret_price = 0.0d;
-					if(ret_discount.equals("0.0")){
-						ret_price = (new BigDecimal(ret_standard)).doubleValue() > (new BigDecimal(ret_primium)).doubleValue()?(new BigDecimal(ret_primium)).doubleValue():(new BigDecimal(ret_standard)).doubleValue();
-					}else if(ret_standard.equals("0.0")){
-						ret_price = (new BigDecimal(ret_primium)).doubleValue() > (new BigDecimal(ret_discount)).doubleValue()?(new BigDecimal(ret_discount)).doubleValue():(new BigDecimal(ret_primium)).doubleValue();
-					}else if (ret_primium.equals("0.0")){
-						ret_price = (new BigDecimal(ret_standard)).doubleValue() > (new BigDecimal(ret_discount)).doubleValue()?(new BigDecimal(ret_discount)).doubleValue():(new BigDecimal(ret_standard)).doubleValue();
-					}else{
-						ret_price = (new BigDecimal(ret_standard)).doubleValue() > (new BigDecimal(ret_discount)).doubleValue()?(new BigDecimal(ret_discount)).doubleValue():(new BigDecimal(ret_standard)).doubleValue();
-						ret_price = ret_price > (new BigDecimal(ret_primium)).doubleValue()?(new BigDecimal(ret_primium)).doubleValue():ret_price;
+					if(!ret_discount.equals("0.0")){
+						ret_price = (new BigDecimal(ret_discount)).doubleValue();
+					}else if(!ret_standard.equals("0.0") && ret_discount.equals("0.0")){
+						ret_price = (new BigDecimal(ret_standard)).doubleValue();
+					}else if(!ret_primium.equals("0.0") && ret_standard.equals("0.0")){
+						ret_price = (new BigDecimal(ret_primium)).doubleValue();
 					}
 					
 					String [] ret_flightNos = ret_flight.split(",");
@@ -338,6 +332,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		return time;
 	}
     
-   
+    
 
 }
