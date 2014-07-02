@@ -221,7 +221,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
         if(time.contains("AM")){
         	time = time.replace("AM", "").trim();
         }else if(time.contains("PM")){
-        	time = time.replace("PM", "下午");
+        	//time = time.replace("PM", "下午");
         }
         
         try {
@@ -233,6 +233,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		return time;
 	}
     
-    
+   
 
 }
