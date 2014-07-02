@@ -69,6 +69,11 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 	}
 	
 	public String getHtml(FlightSearchParam searchParam){
+		if(searchParam.getDepDate() == null || searchParam.getRetDate() == null 
+		     || Integer.valueOf(searchParam.getRetDate().replace("-", "")) < Integer.valueOf(searchParam.getDepDate().replace("-", ""))){
+			return "Exception";
+		}
+		
 		QFGetMethod get = null;	
 		try {
 			QFHttpClient httpClient = new QFHttpClient(searchParam, false);
@@ -129,7 +134,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 				List<String> flightNoRetList = new ArrayList<String>();
 				
 				FlightDetail flightDetail = new FlightDetail();
-				
 				
 				//航班号
 				String go_flight = StringUtils.substringBetween(outFlightInfo, "<td class=\"flight\">", "</td>");
@@ -207,8 +211,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					//到达时间
 					String ret_landTime = StringUtils.substringBetween(retFlightInfo, "<td class=\"time landing\">", "</td>");
 					ret_landTime = toTimeCase(ret_landTime);
-					//支付货币单位
-					//String unit = "";
 					//折扣价
 					String ret_discount = StringUtils.substringBetween(retFlightInfo, "<td rowspan=\"1\" class=\"family family-ED \">", "</td>");
 					if(ret_discount.contains("Not Available")){
@@ -323,8 +325,7 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
         }
         
         try {
-          java.util.Date date = null;
-          date = dateFormat12.parse(time);
+          java.util.Date date = dateFormat12.parse(time);
           time = dateFormat24.format(date);
         } catch (ParseException e) {
         	logger.error(e.getMessage(), e);
@@ -332,6 +333,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		return time;
 	}
     
-    
+   
 
 }
