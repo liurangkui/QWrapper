@@ -255,6 +255,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		return time;
 	}
     
-
+    
 
 }
