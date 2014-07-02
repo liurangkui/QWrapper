@@ -139,10 +139,10 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 				String go_flight = StringUtils.substringBetween(outFlightInfo, "<td class=\"flight\">", "</td>");
 				//起飞时间
 				String go_leavTime = StringUtils.substringBetween(outFlightInfo, "<td class=\"time leaving\">", "</td>");
-				go_leavTime = toTimeCase(go_leavTime);
+				go_leavTime = convertTime(go_leavTime);
 				//到达时间
 				String go_landTime = StringUtils.substringBetween(outFlightInfo, "<td class=\"time landing\">", "</td>");
-				go_landTime = toTimeCase(go_landTime);
+				go_landTime = convertTime(go_landTime);
 				//支付货币单位
 				String unit = "";
 				//折扣价
@@ -207,10 +207,10 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					String ret_flight = StringUtils.substringBetween(retFlightInfo, "<td class=\"flight\">", "</td>");
 					//起飞时间
 					String ret_leavTime = StringUtils.substringBetween(retFlightInfo, "<td class=\"time leaving\">", "</td>");
-					ret_leavTime = toTimeCase(ret_leavTime);
+					ret_leavTime = convertTime(ret_leavTime);
 					//到达时间
 					String ret_landTime = StringUtils.substringBetween(retFlightInfo, "<td class=\"time landing\">", "</td>");
-					ret_landTime = toTimeCase(ret_landTime);
+					ret_landTime = convertTime(ret_landTime);
 					//折扣价
 					String ret_discount = StringUtils.substringBetween(retFlightInfo, "<td rowspan=\"1\" class=\"family family-ED \">", "</td>");
 					if(ret_discount.contains("Not Available")){
@@ -306,33 +306,22 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		
 	}
 	
-	/**
-	 * 将12小时制转换为24小时制
-	 * @param time 如：07:20 下午
-	 * @return
+	/*
+	 * 方法：12进制 转 24进制
 	 */
-	public static String toTimeCase(String time){
-		String format12 = "hh:mm a";
-		String format24 = "HH:mm";
-		DateFormat dateFormat12 = new SimpleDateFormat(format12);
-        DateFormat dateFormat24 = new SimpleDateFormat(format24);
-        
-		time = time.toUpperCase();
-        if(time.contains("AM")){
-        	time = time.replace("AM", "").trim();
-        }else if(time.contains("PM")){
-        	time = time.replace("PM", "下午");
-        }
-        
-        try {
-          java.util.Date date = dateFormat12.parse(time);
-          time = dateFormat24.format(date);
-        } catch (ParseException e) {
-        	logger.error(e.getMessage(), e);
-        }
-		return time;
+	private static String convertTime(String time){
+		String[] timeInfo = time.split(" ");
+		if(timeInfo[1].equals("PM")){
+			String[] times = timeInfo[0].split(":");
+			int hourNum = Integer.parseInt(times[0]);
+			if(hourNum == 12)
+				return time.split(" ")[0];
+			int finalHour = (hourNum + 12)%24;
+			return finalHour + ":" + times[1];
+		}
+		return time.split(" ")[0];
 	}
     
-    
+   
 
 }
