@@ -265,6 +265,7 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 						seg.setArrairport(searchParam.getDep());
 						seg.setDeptime(ret_leavTime);
 						seg.setArrtime(ret_landTime);
+						logger.info(ret_landTime);
 						
 						retSegs.add(seg);
 					}
@@ -298,7 +299,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 			return result;
 		} catch(Exception e){
 			logger.error(e.getMessage(), e);
-			System.out.println(e);
 			result.setRet(false);
 			result.setStatus(Constants.PARSING_FAIL);
 			return result;
@@ -333,6 +333,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		return time;
 	}
     
-   
+    
 
 }
