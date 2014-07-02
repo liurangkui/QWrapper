@@ -29,8 +29,14 @@ import com.qunar.qfwrapper.util.QFHttpClient;
 import com.qunar.qfwrapper.util.QFPostMethod;
 
 /**
-*空蓝航空单程
-*/
+ * 
+ * 空蓝航空	单程  
+ *@Company Qunar
+ *@Team 
+ *@author liurangkui
+ *@version   V1.0 
+ *@date  2014-6-22 下午5:49:45
+ */
 public class Wrapper_gjdairpa001 implements QunarCrawler{
 	private static Logger logger = LoggerFactory.getLogger(Wrapper_gjdairpa001.class);
 	public static String places = "KHI,ISB,ABZ,ALC,AMS,AVN,BCN,BRR,BHD,BEB,BGO,EGC,BZR,BHX,BOD,BES,BRS,BUD,CAL,CWL,CMF,CFE,DSA,CFN,DUB,DBV,MME,DUS,EMA,EDI,EXT,FAO,GVA,GLA,GNB,GCI,HAJ,HEL,HUY,INV,ILY,IOM,JER,JYV,KAJ,KEM,KOI,NOC,KOK,LRH,LBA,LIG,LPL,LGW,LTN,LYS,MAD,AGP,MAN,MHQ,MRS,MXP,MUC,NTE,NCL,NQY,NCE,NRK,NWI,NUE,PMI,CDG,ORY,PGF,PRG,RNS,SZG,SVL,SNN,SOF,SOU,BMA,SYY,STR,LSI,TLL,TAY,TRE,TLS,VRK,VRN,VIE,VBY,WAW,WAT,WIC,ZRH";
@@ -54,7 +60,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		bookingResult.setData(bookingInfo);
 		bookingResult.setRet(true);
 		return bookingResult;
-
 	}
 	
 	
@@ -66,6 +71,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 			
 			String getUrl = String.format("https://www.airblue.com//bookings/flight_selection.aspx?TT=OW&SS=&RT=&FL=on&DC=%s&AC=%s&AM=%s&AD=%s&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=&RM=&RD=&PA=1&PC=&PI=&CC=Y&NS=&CD=", searchParam.getDep(), searchParam.getArr(), searchParam.getDepDate().substring(0, 7), searchParam.getDepDate().substring(8, 10));
 			get = new QFGetMethod(getUrl);
+			get.setFollowRedirects(false);
 		    int status = httpClient.executeMethod(get);
 		    return get.getResponseBodyAsString();
 		} catch (Exception e) {
@@ -100,34 +106,29 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 			result.setStatus(Constants.NO_RESULT);
 			return result;			
 		}
-		String [] jsonStrs = StringUtils.substringsBetween(content, "<tr class=\"flight-status-ontime\">", "</tr>");
-		String date = "";//起飞日期
-		String org = "";//起飞机场三字码
-		String dst = "";//到达机场三字码
+		String [] flights = StringUtils.substringsBetween(content, "<tr class=\"flight-status-ontime\">", "</tr>");
 		
-		String tempStr = "";
 		try {			
 			List<OneWayFlightInfo> flightList = new ArrayList<OneWayFlightInfo>();
-			for(int i = 0; i < jsonStrs.length; i++){
+			for(String fInfo:flights){
 				OneWayFlightInfo baseFlight = new OneWayFlightInfo();
 				List<FlightSegement> segs = new ArrayList<FlightSegement>();
 				FlightDetail flightDetail = new FlightDetail();
 				FlightSegement seg = new FlightSegement();
 				List<String> flightNoList = new ArrayList<String>();
 				
-				tempStr = jsonStrs[i];
 				//航班号
-				String flight = StringUtils.substringBetween(tempStr, "<td class=\"flight\">", "</td>");
+				String flight = StringUtils.substringBetween(fInfo, "<td class=\"flight\">", "</td>");
 				//起飞时间
-				String leavTime = StringUtils.substringBetween(tempStr, "<td class=\"time leaving\">", "</td>");
+				String leavTime = StringUtils.substringBetween(fInfo, "<td class=\"time leaving\">", "</td>");
 				leavTime = toTimeCase(leavTime);
 				//到达时间
-				String landTime = StringUtils.substringBetween(tempStr, "<td class=\"time landing\">", "</td>");
+				String landTime = StringUtils.substringBetween(fInfo, "<td class=\"time landing\">", "</td>");
 				landTime = toTimeCase(landTime);
 				//支付货币单位
 				String unit = "";
 				//折扣价
-				String discount = StringUtils.substringBetween(tempStr, "<td rowspan=\"1\" class=\"family family-ED \">", "</td>");
+				String discount = StringUtils.substringBetween(fInfo, "<td rowspan=\"1\" class=\"family family-ED \">", "</td>");
 				if(discount.contains("Not Available")){
 					discount = "0.0";
 				}else{
@@ -138,7 +139,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				}
 				
 				//标准价
-				String standard = StringUtils.substringBetween(tempStr, "<td rowspan=\"1\" class=\"family family-ES", "</td>");
+				String standard = StringUtils.substringBetween(fInfo, "<td rowspan=\"1\" class=\"family family-ES", "</td>");
 				if(standard.contains("Not Available")){
 					standard = "0.0";
 				}else{
@@ -149,12 +150,12 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				}
 				
 				//保险费
-				String primium = StringUtils.substringBetween(tempStr, "<td rowspan=\"1\" class=\"family family-EP \">", "</td>");
+				String primium = StringUtils.substringBetween(fInfo, "<td rowspan=\"1\" class=\"family family-EP \">", "</td>");
 				if(primium.contains("Not Available")){
 					primium = "0.0";
 				}else{
 					//支付货币单位
-					unit = unit.equals("")?StringUtils.substringBetween(standard, "<b>", "</b>").trim():unit;
+					unit = unit.equals("")?StringUtils.substringBetween(primium, "<b>", "</b>").trim():unit;
 					primium = StringUtils.substringBetween(primium, "</b>", "</span>").trim();
 					primium = primium.replace(",", "");
 				}
@@ -170,18 +171,19 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					price = price > (new BigDecimal(primium)).doubleValue()?(new BigDecimal(primium)).doubleValue():price;
 				}
 				
-				//String flightNo = flight.replaceAll("[^a-zA-Z\\d]", "");
 				String [] flightNos = flight.split(",");
 				for(String flightNo:flightNos){
-					flightNo = flight.replaceAll("[^a-zA-Z\\d]", "");
+					flightNo = flight.replaceAll("[^a-zA-Z\\d]", "").trim();
 					flightNoList.add(flightNo);
 					seg.setFlightno(flightNo);
-					seg.setDepDate(searchParam.getDepDate());
-					seg.setArrDate(searchParam.getDepDate());
+					//seg.setDepDate(searchParam.getDepDate());
+					//seg.setArrDate(searchParam.getDepDate());
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(leavTime);
 					seg.setArrtime(landTime);
+					
+					segs.add(seg);
 				}
 				
 				flightDetail.setDepdate(Date.valueOf(searchParam.getDepDate()));
@@ -192,7 +194,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				flightDetail.setDepcity(searchParam.getDep());
 				flightDetail.setArrcity(searchParam.getArr());
 				flightDetail.setWrapperid(searchParam.getWrapperid());
-				segs.add(seg);
 				baseFlight.setDetail(flightDetail);
 				baseFlight.setInfo(segs);
 				flightList.add(baseFlight);
