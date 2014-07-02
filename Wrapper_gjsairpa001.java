@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,9 +140,13 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 				String go_flight = StringUtils.substringBetween(outFlightInfo, "<td class=\"flight\">", "</td>");
 				//起飞时间
 				String go_leavTime = StringUtils.substringBetween(outFlightInfo, "<td class=\"time leaving\">", "</td>");
-				go_leavTime = convertTime(go_leavTime);
 				//到达时间
 				String go_landTime = StringUtils.substringBetween(outFlightInfo, "<td class=\"time landing\">", "</td>");
+				String go_arrDate = searchParam.getDepDate();
+				if(go_leavTime.contains("PM") && go_landTime.contains("AM")){
+					go_arrDate = getSpecifiedDayAfter(go_arrDate);
+				}
+				go_leavTime = convertTime(go_leavTime);
 				go_landTime = convertTime(go_landTime);
 				//支付货币单位
 				String unit = "";
@@ -194,7 +199,7 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					FlightSegement seg = new FlightSegement();
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
-					seg.setArrDate(searchParam.getDepDate());
+					seg.setArrDate(go_arrDate);
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(go_leavTime);
@@ -207,9 +212,13 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					String ret_flight = StringUtils.substringBetween(retFlightInfo, "<td class=\"flight\">", "</td>");
 					//起飞时间
 					String ret_leavTime = StringUtils.substringBetween(retFlightInfo, "<td class=\"time leaving\">", "</td>");
-					ret_leavTime = convertTime(ret_leavTime);
 					//到达时间
 					String ret_landTime = StringUtils.substringBetween(retFlightInfo, "<td class=\"time landing\">", "</td>");
+					String ret_arrDate = searchParam.getRetDate();
+					if(ret_leavTime.contains("PM") && ret_landTime.contains("AM")){
+						ret_arrDate = getSpecifiedDayAfter(ret_arrDate);
+					}
+					ret_leavTime = convertTime(ret_leavTime);
 					ret_landTime = convertTime(ret_landTime);
 					//折扣价
 					String ret_discount = StringUtils.substringBetween(retFlightInfo, "<td rowspan=\"1\" class=\"family family-ED \">", "</td>");
@@ -260,12 +269,11 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 						FlightSegement seg = new FlightSegement();
 						seg.setFlightno(flightNo);
 						seg.setDepDate(searchParam.getRetDate());
-						seg.setArrDate(searchParam.getRetDate());
+						seg.setArrDate(ret_arrDate);
 						seg.setDepairport(searchParam.getArr());
 						seg.setArrairport(searchParam.getDep());
 						seg.setDeptime(ret_leavTime);
 						seg.setArrtime(ret_landTime);
-						logger.info(ret_landTime);
 						
 						retSegs.add(seg);
 					}
@@ -321,7 +329,28 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		}
 		return time.split(" ")[0];
 	}
+	
+	/** 
+	* 获得指定日期的后一天 
+	* @param specifiedDay 
+	* @return 
+	*/ 
+	public static String getSpecifiedDayAfter(String specifiedDay){ 
+	Calendar c = Calendar.getInstance(); 
+	java.util.Date date=null; 
+	try { 
+	date = new SimpleDateFormat("yy-MM-dd").parse(specifiedDay); 
+	} catch (ParseException e) { 
+	e.printStackTrace(); 
+	} 
+	c.setTime(date);
+	int day=c.get(Calendar.DATE); 
+	c.set(Calendar.DATE,day+1); 
+
+	String dayAfter=new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
+	return dayAfter; 
+	} 
     
-   
+    
 
 }
