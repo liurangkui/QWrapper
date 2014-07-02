@@ -20,7 +20,6 @@ import com.qunar.qfwrapper.bean.booking.BookingResult;
 import com.qunar.qfwrapper.bean.search.FlightDetail;
 import com.qunar.qfwrapper.bean.search.FlightSearchParam;
 import com.qunar.qfwrapper.bean.search.FlightSegement;
-import com.qunar.qfwrapper.bean.search.OneWayFlightInfo;
 import com.qunar.qfwrapper.bean.search.ProcessResultInfo;
 import com.qunar.qfwrapper.bean.search.RoundTripFlightInfo;
 import com.qunar.qfwrapper.constants.Constants;
@@ -37,11 +36,9 @@ import com.qunar.qfwrapper.util.QFHttpClient;
  *@date  2014-6-30 下午5:49:45
  */
 public class Wrapper_gjsairpa001 {
-	private static Logger logger = LoggerFactory.getLogger(Wrapper_gjdairpa001.class);
+	private static Logger logger = LoggerFactory.getLogger(Wrapper_gjsairpa001.class);
 	public static String places = "KHI,ISB,ABZ,ALC,AMS,AVN,BCN,BRR,BHD,BEB,BGO,EGC,BZR,BHX,BOD,BES,BRS,BUD,CAL,CWL,CMF,CFE,DSA,CFN,DUB,DBV,MME,DUS,EMA,EDI,EXT,FAO,GVA,GLA,GNB,GCI,HAJ,HEL,HUY,INV,ILY,IOM,JER,JYV,KAJ,KEM,KOI,NOC,KOK,LRH,LBA,LIG,LPL,LGW,LTN,LYS,MAD,AGP,MAN,MHQ,MRS,MXP,MUC,NTE,NCL,NQY,NCE,NRK,NWI,NUE,PMI,CDG,ORY,PGF,PRG,RNS,SZG,SVL,SNN,SOF,SOU,BMA,SYY,STR,LSI,TLL,TAY,TRE,TLS,VRK,VRN,VIE,VBY,WAW,WAT,WIC,ZRH";
 
-	
-	
 	public BookingResult getBookingInfo(FlightSearchParam arg0) {
 
 		String bookingUrlPre = "https://www.airblue.com//bookings/flight_selection.aspx";
@@ -339,6 +336,6 @@ public class Wrapper_gjsairpa001 {
 		return time;
 	}
     
-   
+  
 
 }
