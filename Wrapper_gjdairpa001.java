@@ -201,7 +201,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 			return result;
 		} catch(Exception e){
 			logger.error(e.getMessage(), e);
-			System.out.println(e);
 			result.setRet(false);
 			result.setStatus(Constants.PARSING_FAIL);
 			return result;
@@ -226,8 +225,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
         }
         
         try {
-          java.util.Date date = null;
-          date = dateFormat12.parse(time);
+          java.util.Date date =  dateFormat12.parse(time);
           time = dateFormat24.format(date);
         } catch (ParseException e) {
         	logger.error(e.getMessage(), e);
@@ -235,6 +233,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		return time;
 	}
     
-   
+    
 
 }
