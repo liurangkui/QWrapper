@@ -160,15 +160,12 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					primium = primium.replace(",", "");
 				}
 				double price = 0.0d;
-				if(discount.equals("0.0")){
-					price = (new BigDecimal(standard)).doubleValue() > (new BigDecimal(primium)).doubleValue()?(new BigDecimal(primium)).doubleValue():(new BigDecimal(standard)).doubleValue();
-				}else if(standard.equals("0.0")){
-					price = (new BigDecimal(primium)).doubleValue() > (new BigDecimal(discount)).doubleValue()?(new BigDecimal(discount)).doubleValue():(new BigDecimal(primium)).doubleValue();
-				}else if (primium.equals("0.0")){
-					price = (new BigDecimal(standard)).doubleValue() > (new BigDecimal(discount)).doubleValue()?(new BigDecimal(discount)).doubleValue():(new BigDecimal(standard)).doubleValue();
-				}else{
-					price = (new BigDecimal(standard)).doubleValue() > (new BigDecimal(discount)).doubleValue()?(new BigDecimal(discount)).doubleValue():(new BigDecimal(standard)).doubleValue();
-					price = price > (new BigDecimal(primium)).doubleValue()?(new BigDecimal(primium)).doubleValue():price;
+				if(!discount.equals("0.0")){
+					price = (new BigDecimal(discount)).doubleValue();
+				}else if(!standard.equals("0.0") && discount.equals("0.0")){
+					price = (new BigDecimal(standard)).doubleValue();
+				}else if(!primium.equals("0.0") && standard.equals("0.0")){
+					price = (new BigDecimal(primium)).doubleValue();
 				}
 				
 				String [] flightNos = flight.split(",");
