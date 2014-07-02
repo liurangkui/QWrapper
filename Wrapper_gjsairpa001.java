@@ -192,7 +192,7 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 					FlightSegement seg = new FlightSegement();
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
-					//seg.setArrDate(searchParam.getDepDate());
+					seg.setArrDate(searchParam.getDepDate());
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(go_leavTime);
@@ -263,7 +263,7 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 						FlightSegement seg = new FlightSegement();
 						seg.setFlightno(flightNo);
 						seg.setDepDate(searchParam.getRetDate());
-						//seg.setArrDate(searchParam.getRetDate());
+						seg.setArrDate(searchParam.getRetDate());
 						seg.setDepairport(searchParam.getArr());
 						seg.setArrairport(searchParam.getDep());
 						seg.setDeptime(ret_leavTime);
@@ -337,6 +337,6 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 		return time;
 	}
     
-  
+   
 
 }
