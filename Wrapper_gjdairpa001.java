@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -137,8 +138,10 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				String flight = StringUtils.substringBetween(tempStr, "<td class=\"flight\">", "</td>");
 				//起飞时间
 				String leavTime = StringUtils.substringBetween(tempStr, "<td class=\"time leaving\">", "</td>");
+				leavTime = toTimeCase(leavTime);
 				//到达时间
 				String landTime = StringUtils.substringBetween(tempStr, "<td class=\"time landing\">", "</td>");
+				landTime = toTimeCase(landTime);
 				//支付货币单位
 				String unit = "";
 				//折扣价
@@ -224,9 +227,34 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 			return result;
 		}
 	}
-	
-	
+	/**
+	 * 将12小时制转换为24小时制
+	 * @param time 如：07:20 下午
+	 * @return
+	 */
+	public static String toTimeCase(String time){
+		String format12 = "hh:mm a";
+		String format24 = "HH:mm";
+		DateFormat dateFormat12 = new SimpleDateFormat(format12);
+        DateFormat dateFormat24 = new SimpleDateFormat(format24);
+        
+		time = time.toUpperCase();
+        if(time.contains("AM")){
+        	time = time.replace("AM", "").trim();
+        }else if(time.contains("PM")){
+        	time = time.replace("PM", "下午");
+        }
+        
+        try {
+          java.util.Date date = null;
+          date = dateFormat12.parse(time);
+          time = dateFormat24.format(date);
+        } catch (ParseException e) {
+        	logger.error(e.getMessage(), e);
+        }
+		return time;
+	}
     
-
+ 
 
 }
