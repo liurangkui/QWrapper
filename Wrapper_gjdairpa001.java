@@ -177,7 +177,7 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					flightNoList.add(flightNo);
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
-					//seg.setArrDate(searchParam.getDepDate());
+					seg.setArrDate(searchParam.getDepDate());
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(leavTime);
