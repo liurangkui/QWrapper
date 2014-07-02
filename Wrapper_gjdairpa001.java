@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,9 +122,13 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 				String flight = StringUtils.substringBetween(fInfo, "<td class=\"flight\">", "</td>");
 				//起飞时间
 				String leavTime = StringUtils.substringBetween(fInfo, "<td class=\"time leaving\">", "</td>");
-				leavTime = convertTime(leavTime);
 				//到达时间
 				String landTime = StringUtils.substringBetween(fInfo, "<td class=\"time landing\">", "</td>");
+				String arrDate = searchParam.getDepDate();
+				if(leavTime.contains("PM") && landTime.contains("AM")){
+					arrDate = getSpecifiedDayAfter(arrDate);
+				}
+				leavTime = convertTime(leavTime);
 				landTime = convertTime(landTime);
 				//支付货币单位
 				String unit = "";
@@ -174,12 +179,11 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 					flightNoList.add(flightNo);
 					seg.setFlightno(flightNo);
 					seg.setDepDate(searchParam.getDepDate());
-					seg.setArrDate(searchParam.getDepDate());
+					seg.setArrDate(arrDate);
 					seg.setDepairport(searchParam.getDep());
 					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(leavTime);
 					seg.setArrtime(landTime);
-					
 					segs.add(seg);
 				}
 				
@@ -223,6 +227,27 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		}
 		return time.split(" ")[0];
 	}
+	
+	/** 
+	* 获得指定日期的后一天 
+	* @param specifiedDay 
+	* @return 
+	*/ 
+	public static String getSpecifiedDayAfter(String specifiedDay){ 
+	Calendar c = Calendar.getInstance(); 
+	java.util.Date date=null; 
+	try { 
+	date = new SimpleDateFormat("yy-MM-dd").parse(specifiedDay); 
+	} catch (ParseException e) { 
+	e.printStackTrace(); 
+	} 
+	c.setTime(date); 
+	int day=c.get(Calendar.DATE); 
+	c.set(Calendar.DATE,day+1); 
+
+	String dayAfter=new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()); 
+	return dayAfter; 
+	} 
 
 	
     
