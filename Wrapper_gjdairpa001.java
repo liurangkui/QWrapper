@@ -44,33 +44,12 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		bookingInfo.setMethod("get");
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		map.put("TT", "OW");
-		/*map.put("SS", "");
-		map.put("RT", "");*/
 		map.put("FL", "on");
 		map.put("DC", param.getDep());
 		map.put("AC", param.getArr());
 		map.put("AM", param.getDepDate().substring(0, 7));
 		map.put("AD", param.getDepDate().substring(8, 10));
-		/*map.put("DC", "");
-		map.put("AC", "");
-		map.put("AM", "");
-		map.put("AD", "");
-		map.put("DC", "");
-		map.put("AC", "");
-		map.put("AM", "");
-		map.put("AD", "");
-		map.put("DC", "");
-		map.put("AC", "");
-		map.put("AM", "");
-		map.put("AD", "");
-		map.put("RM", "");
-		map.put("RD", "");*/
 		map.put("PA", "1");
-		/*map.put("PC", "");
-		map.put("PI", "");
-		map.put("CC", "");
-		map.put("NS", "");
-		map.put("CD", "");*/
 		bookingInfo.setInputs(map);		
 		bookingResult.setData(bookingInfo);
 		bookingResult.setRet(true);
@@ -258,6 +237,6 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 		return time;
 	}
     
-   
+    
 
 }
