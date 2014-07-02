@@ -193,10 +193,10 @@ public class Wrapper_gjsairpa001 {
 					
 					FlightSegement seg = new FlightSegement();
 					seg.setFlightno(flightNo);
-					/*seg.setDepDate(searchParam.getDepDate());
-					seg.setArrDate(searchParam.getDepDate());
+					seg.setDepDate(searchParam.getDepDate());
+					//seg.setArrDate(searchParam.getDepDate());
 					seg.setDepairport(searchParam.getDep());
-					seg.setArrairport(searchParam.getArr());*/
+					seg.setArrairport(searchParam.getArr());
 					seg.setDeptime(go_leavTime);
 					seg.setArrtime(go_landTime);
 					segs.add(seg);
@@ -264,10 +264,10 @@ public class Wrapper_gjsairpa001 {
 						
 						FlightSegement seg = new FlightSegement();
 						seg.setFlightno(flightNo);
-//						seg.setDepDate(searchParam.getDepDate());
-//						seg.setArrDate(searchParam.getDepDate());
-//						seg.setDepairport(searchParam.getDep());
-//						seg.setArrairport(searchParam.getArr());
+						seg.setDepDate(searchParam.getRetDate());
+						//seg.setArrDate(searchParam.getRetDate());
+						seg.setDepairport(searchParam.getArr());
+						seg.setArrairport(searchParam.getDep());
 						seg.setDeptime(ret_leavTime);
 						seg.setArrtime(ret_landTime);
 						
