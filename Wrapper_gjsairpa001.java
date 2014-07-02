@@ -40,26 +40,27 @@ public class Wrapper_gjsairpa001 implements QunarCrawler {
 	private static Logger logger = LoggerFactory.getLogger(Wrapper_gjsairpa001.class);
 	public static String places = "KHI,ISB,ABZ,ALC,AMS,AVN,BCN,BRR,BHD,BEB,BGO,EGC,BZR,BHX,BOD,BES,BRS,BUD,CAL,CWL,CMF,CFE,DSA,CFN,DUB,DBV,MME,DUS,EMA,EDI,EXT,FAO,GVA,GLA,GNB,GCI,HAJ,HEL,HUY,INV,ILY,IOM,JER,JYV,KAJ,KEM,KOI,NOC,KOK,LRH,LBA,LIG,LPL,LGW,LTN,LYS,MAD,AGP,MAN,MHQ,MRS,MXP,MUC,NTE,NCL,NQY,NCE,NRK,NWI,NUE,PMI,CDG,ORY,PGF,PRG,RNS,SZG,SVL,SNN,SOF,SOU,BMA,SYY,STR,LSI,TLL,TAY,TRE,TLS,VRK,VRN,VIE,VBY,WAW,WAT,WIC,ZRH";
 
-	public BookingResult getBookingInfo(FlightSearchParam arg0) {
+	public BookingResult getBookingInfo(FlightSearchParam param) {
 
 		String bookingUrlPre = "https://www.airblue.com//bookings/flight_selection.aspx";
 		BookingResult bookingResult = new BookingResult();
 		
 		BookingInfo bookingInfo = new BookingInfo();
 		bookingInfo.setAction(bookingUrlPre);
-		bookingInfo.setMethod("post");
+		bookingInfo.setMethod("get");
 		Map<String, String> map = new LinkedHashMap<String, String>();
-		map.put("ro", "0");
-		map.put("DC", arg0.getDep());
-		map.put("AC", arg0.getArr());
-		map.put("cur", "KHI");
-		map.put("sdate", arg0.getDepDate().replaceAll("-", "/"));
-		map.put("edate", arg0.getDepDate().replaceAll("-", "/"));
-		map.put("adult", "1");
-		map.put("child", "0");
-		map.put("infant", "0");
-		map.put("view", "0");
-		map.put("btnsubmit", "Flight Search");
+		map.put("TT", "RT");
+		map.put("DC", param.getDep());
+		map.put("AC", param.getArr());
+		map.put("AM", param.getDepDate().substring(0, 7));
+		map.put("AD", param.getDepDate().substring(8, 10));
+		map.put("RM", param.getRetDate().substring(0, 7));
+		map.put("RD", param.getRetDate().substring(8, 10));
+		map.put("FL", "on");
+		map.put("CC", "Y");
+		map.put("PA", "1");
+		map.put("x", "48");
+		map.put("y", "16");
 		bookingInfo.setInputs(map);		
 		bookingResult.setData(bookingInfo);
 		bookingResult.setRet(true);
