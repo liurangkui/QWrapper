@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.qunar.qfwrapper.bean.booking.BookingInfo;
 import com.qunar.qfwrapper.bean.booking.BookingResult;
 import com.qunar.qfwrapper.bean.search.FlightDetail;
@@ -80,13 +81,15 @@ public class Wrapper_gjdairpa001 implements QunarCrawler{
 	
 	public String getHtml(FlightSearchParam searchParam){
 		QFGetMethod get = null;	
-		try {	
+		try {
 			QFHttpClient httpClient = new QFHttpClient(searchParam, false);
+			httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+			
 			String getUrl = String.format("https://www.airblue.com//bookings/flight_selection.aspx?TT=OW&SS=&RT=&FL=on&DC=%s&AC=%s&AM=%s&AD=%s&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=&DC=&AC=&AM=&AD=&RM=&RD=&PA=1&PC=&PI=&CC=Y&NS=&CD=", searchParam.getDep(), searchParam.getArr(), searchParam.getDepDate().substring(0, 7), searchParam.getDepDate().substring(8, 10));
 			get = new QFGetMethod(getUrl);
 		    int status = httpClient.executeMethod(get);
 		    return get.getResponseBodyAsString();
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		} finally{
 			if (null != get){
